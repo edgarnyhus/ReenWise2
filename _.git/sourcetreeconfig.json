@@ -1,0 +1,32 @@
+{
+  "$id": "17",
+  "AutoRefresh": true,
+  "AutoRefreshRemotes": true,
+  "CommitTextLinks": null,
+  "DraftCommitMsg": "",
+  "IncomingSavedCount": 2,
+  "LastCheckedRemotes": "2020-01-13T10:14:42.5340679+01:00",
+  "LastUsedView": 0,
+  "LogBranchFilterIndex": 0,
+  "OutgoingSavedCount": 1,
+  "SidebarExpandedItems": [
+    "Branches"
+  ],
+  "SidebarWidth": 210.0,
+  "SubtreeLinks": [],
+  "RemoteProjectLinks": [
+    {
+      "$id": "18",
+      "BaseUrl": "https://github.com",
+      "Identifier": "GetAcademy/ReenWise",
+      "RemoteName": "origin",
+      "Type": 0,
+      "Username": "edgarnyhus",
+      "CloneUrl": null,
+      "ProjectUrl": null,
+      "AccountId": "edgarnyhus@github.com",
+      "AvatarUrl": null,
+      "DisplayName": "origin: https://github.com"
+    }
+  ]
+}

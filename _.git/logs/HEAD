@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 9749360937d67477cf2cd4c572ca61be77859f31 edgarnyhus <edgar.nyhus@gmail.com> 1576859765 +0100	clone: from https://github.com/GetAcademy/ReenWise.git
+9749360937d67477cf2cd4c572ca61be77859f31 bd5df4d64ccb34e242dd90acc8020cfe7111dcd4 edgarnyhus <edgar.nyhus@gmail.com> 1576860187 +0100	commit: Removerd obj and bin folders
+bd5df4d64ccb34e242dd90acc8020cfe7111dcd4 130d8c50705bfd2342d5276d01a6d116ca0e1f2b edgarnyhus <edgar.nyhus@gmail.com> 1576861098 +0100	commit: Removed not used projects
+130d8c50705bfd2342d5276d01a6d116ca0e1f2b 5393fc7cbce0a7342c975f6163387bef03300dce edgarnyhus <edgar.nyhus@gmail.com> 1576861190 +0100	commit: Added .gitignore and README.MD in root directory
+5393fc7cbce0a7342c975f6163387bef03300dce 2bbf83ba84756525f00285c92bf82932d260a9d6 edgarnyhus <edgar.nyhus@gmail.com> 1578342302 +0100	commit: Added Automapper (mapping domain entitis to DTOs) and CQRS
+2bbf83ba84756525f00285c92bf82932d260a9d6 ea40ac6e710106b946a4c6ad450adb76229bc493 edgarnyhus <edgar.nyhus@gmail.com> 1578906882 +0100	commit: Changes to comply to Clean Architecture
