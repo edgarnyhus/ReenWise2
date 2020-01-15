@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using ReenWise.Domain.Commands;
 using ReenWise.Domain.Contracts;
@@ -22,11 +23,13 @@ namespace ReenWise.Domain.CommandHandler
         //private readonly IRepository<Equipment> _repository;
         private readonly IEquipmentRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ILogger<CreateEquipmentHandler> _logger;
 
-        public CreateEquipmentHandler(IRepository<Equipment> repository, IMapper mapper)
+        public CreateEquipmentHandler(IRepository<Equipment> repository, IMapper mapper, ILogger<CreateEquipmentHandler> logger)
         {
             _repository = (IEquipmentRepository) repository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<EquipmentDto> Handle(CreateEquipmentCommand command, CancellationToken cancellationToken)
@@ -52,6 +55,7 @@ namespace ReenWise.Domain.CommandHandler
             //_logger.LogInformation($"Created equipment: {result.Id}");
             var _location = entity.Locations.FirstOrDefault();
             var response = _mapper.Map<Equipment, EquipmentDto>(entity);
+            _logger.LogInformation($"Created equipment: {response.ToString()}");
             response.location = _mapper.Map<Location, LocationDto>(_location);
             return response;
         }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using ReenWise.Domain.CommandHandler;
 using ReenWise.Domain.Interfaces;
 using ReenWise.Domain.Models.Mirror;
 using ReenWise.Infrastructure.Data.Context;
@@ -12,13 +14,17 @@ namespace ReenWise.Infrastructure.Data.Repositories
 {
     public class EquipmentRepository : Repository<Equipment>, IEquipmentRepository
     {
-        public EquipmentRepository(ReenWiseDbContext dbContext) : base(dbContext)
+        private readonly ILogger<EquipmentRepository> _logger;
+
+        public EquipmentRepository(ReenWiseDbContext dbContext, ILogger<EquipmentRepository> logger) : base(dbContext)
         {
- 
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Equipment>> GetAll()
         {
+            _logger.LogInformation($"GetAll: Get all equipment");
+
             var query = _dbContext.Set<Equipment>()
                 .Include(_dbContext.GetIncludePaths(typeof(Equipment)))
                 .Include(x => x.Locations);

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReenWise.Infrastructure.Data.Context;
 
 namespace ReenWise.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ReenWiseDbContext))]
-    partial class ReenWiseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200114151758_InitialModel")]
+    partial class InitialModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

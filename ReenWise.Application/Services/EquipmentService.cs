@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using ReenWise.Application.Interfaces;
+using ReenWise.Domain.CommandHandler;
 using ReenWise.Domain.Dtos;
 using ReenWise.Domain.Commands;
 using ReenWise.Domain.Models.Mirror;
@@ -21,17 +23,20 @@ namespace ReenWise.Application.Services
         private readonly IMapper _mapper;
         private readonly IRepository<Equipment> _repository;
         private readonly IMediator _mediator;
+        private readonly ILogger<EquipmentService> _logger;
 
-        public EquipmentService(IMapper mapper, IRepository<Equipment> repository, IMediator mediator)
+        public EquipmentService(IMapper mapper, IRepository<Equipment> repository, IMediator mediator, ILogger<EquipmentService> logger)
         {
             _mapper = mapper;
             _repository = repository;
             _mediator = mediator;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<EquipmentDto>> GetEquipment(EquipmentQueryParameters queryParameters)
         {
             var query = new GetAllEquipmentQuery(queryParameters);
+            _logger.LogInformation($"GetEquipment: Making query {query.ToString()}");
             var result = await _mediator.Send(query);
             return result;
         }
@@ -39,6 +44,7 @@ namespace ReenWise.Application.Services
         public async Task<EquipmentDto> GetEquipmentById(Guid id)
         {
             var query = new GetEquipmentByIdQuery(id);
+            _logger.LogInformation($"GetEquipmentById: Making query {query.ToString()}");
             var result = await _mediator.Send(query);
             return result;
         }
@@ -46,6 +52,7 @@ namespace ReenWise.Application.Services
         public async Task<EquipmentDto> CreateEquipment(EquipmentContract contract)
         {                
             var command = new CreateEquipmentCommand(contract);
+            _logger.LogInformation($"CreateEquipment: Making command{command.ToString()}");
             var result = await _mediator.Send(command);
             return result;
         }
@@ -53,6 +60,7 @@ namespace ReenWise.Application.Services
         public async Task<bool> UpdateEquipment(Guid id, EquipmentContract contract)
         {
             var command = new UpdateEquipmentCommand(id, contract);
+            _logger.LogInformation($"UpdateEquipment: Making command {command.ToString()}");
             var result = await _mediator.Send(command);
             return result;
         }
@@ -60,6 +68,7 @@ namespace ReenWise.Application.Services
         public async Task<bool> DeleteEquipment(Guid id)
         {
             var command = new DeleteEquipmentCommand(id);
+            _logger.LogInformation($"DeleteEquipment: {command.ToString()}");
             var result = await _mediator.Send(command);
             return result;
         }

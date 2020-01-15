@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReenWise.Application.Interfaces;
+using ReenWise.Domain.CommandHandler;
 using ReenWise.Domain.Contracts;
 using ReenWise.Domain.Dtos;
 using ReenWise.Domain.Models;
@@ -17,10 +19,12 @@ namespace ReenWise.Api.Controllers
     public class EquipmentController : ControllerBase
     {
         private readonly IEquipmentService _equipmentService;
+        private readonly ILogger<EquipmentController> _logger;
 
-        public EquipmentController(IEquipmentService equipmentService)
+        public EquipmentController(IEquipmentService equipmentService, ILogger<EquipmentController> logger)
         {
             _equipmentService = equipmentService;
+            _logger = logger;
         }
 
         // GET: api/Equipment
@@ -28,8 +32,9 @@ namespace ReenWise.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEquipment([FromQuery] EquipmentQueryParameters queryParameters)
         {
-            var result = await _equipmentService.GetEquipment(queryParameters);
+            _logger.LogInformation($"EquipmentController: GET equipement with paramerters={queryParameters.ToString()}");
 
+            var result = await _equipmentService.GetEquipment(queryParameters);
             var metadata = new
             {
                 //result.TotalCount,
@@ -47,7 +52,7 @@ namespace ReenWise.Api.Controllers
             return Ok(result);
         }
 
-        // GET: api/Equipment/<id>
+        // GET: api/equipment/<id>
         [Route("~/api/Equipment/{id}")]
         [HttpGet]
         public async Task<IActionResult> GetEquipmentById(Guid id)
@@ -56,7 +61,7 @@ namespace ReenWise.Api.Controllers
             return result != null ? (IActionResult)Ok(result) : NotFound();
         }
 
-        // POST: api/Equipment
+        // POST: api/equipment
         [Route("~/api/Equipment")]
         [HttpPost]
         public async Task<IActionResult> CreateEquipment([FromBody] EquipmentContract contract)
@@ -65,7 +70,7 @@ namespace ReenWise.Api.Controllers
             return Ok(result);
         }
 
-        // PUT: api/Equipment/<id>
+        // PUT: api/equipment/<id>
         [Route("~/api/Equipment/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateEquipment(Guid id, [FromBody] EquipmentContract contract)
@@ -73,10 +78,10 @@ namespace ReenWise.Api.Controllers
             var result = await _equipmentService.UpdateEquipment(id, contract);
             if (!result)
                 return NotFound();
-            return Ok("Eqipment updated");
+            return Ok("Equipment updated");
         }
 
-        // DELETE: api/ApiWithActions/<id>
+        // DELETE: api/equipment/<id>
         [Route("~/api/Equipment/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteEquipment(Guid id)
