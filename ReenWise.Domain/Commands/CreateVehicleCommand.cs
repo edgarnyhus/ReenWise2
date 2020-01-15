@@ -5,15 +5,16 @@ using MediatR;
 using ReenWise.Domain.Contracts;
 using ReenWise.Domain.Dtos;
 using ReenWise.Domain.Models;
+using ReenWise.Domain.Models.Mirror;
 
 namespace ReenWise.Domain.Commands
 {
-    public class CreateVehicleCommand : IRequest<VehicleDto>
+    public class CreateVehicleCommand : IRequest<Vehicle>
     {
-        public VehicleContract VehicleContract { get; }
-        public CreateVehicleCommand(VehicleContract contract)
+        public Vehicle Vehicle { get; }
+        public CreateVehicleCommand(Vehicle entity)
         {
-            this.VehicleContract = contract;
+            this.Vehicle = entity;
         }
     }
 }

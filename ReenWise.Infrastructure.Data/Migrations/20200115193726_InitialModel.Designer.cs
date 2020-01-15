@@ -10,7 +10,7 @@ using ReenWise.Infrastructure.Data.Context;
 namespace ReenWise.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ReenWiseDbContext))]
-    [Migration("20200112011955_InitialModel")]
+    [Migration("20200115193726_InitialModel")]
     partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,12 +192,12 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fa6d7df6-8b73-4e94-9f02-87c8496345bf"),
+                            Id = new Guid("31f0f55a-0ccc-4db2-9c9e-38004a336b77"),
                             Name = "Nordcon AS"
                         },
                         new
                         {
-                            Id = new Guid("1157b2ae-384b-49bf-9770-7cf2e7cab37b"),
+                            Id = new Guid("4b23aa38-355d-49ad-8a05-967fc1136183"),
                             Name = "BNS Container AS"
                         });
                 });
@@ -256,84 +256,84 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9d761bf4-c825-4718-bc5a-07c9b13d0e55"),
+                            Id = new Guid("be2ef4b7-4d13-4a05-9806-66465b2bbb66"),
                             Description = "B3",
                             Name = "DAJLJA C-05L-L",
                             SerialNumber = "MUM030887"
                         },
                         new
                         {
-                            Id = new Guid("9350a074-741d-48d6-97fe-89fb5839887f"),
+                            Id = new Guid("02548f4e-84bf-4e99-87ce-b9d7c8f98986"),
                             Description = "C Estetisk stygg",
                             Name = "EAARST C-10L",
                             SerialNumber = "MUM030467"
                         },
                         new
                         {
-                            Id = new Guid("31ec567e-530f-450a-acd4-c421a9629515"),
+                            Id = new Guid("356cf5b4-cdc2-42c2-96bd-7c660abe583c"),
                             Description = "C Estetisk stygg",
                             Name = "EABXEL C-10L",
                             SerialNumber = "MUM030764"
                         },
                         new
                         {
-                            Id = new Guid("78dcdebf-fcdf-4c1e-860c-238dd3cd9f8c"),
+                            Id = new Guid("cf161733-ac50-4cea-9f2b-eada036d1203"),
                             Description = "B Estetisk stygg",
                             Name = "EACHRX C-08CL",
                             SerialNumber = "MUM030719"
                         },
                         new
                         {
-                            Id = new Guid("be7d8152-565a-4d54-81fb-8322c9e813ea"),
+                            Id = new Guid("bac1e53d-2781-4e8a-a93f-c697c37c2084"),
                             Description = "B Estetisk stygg",
                             Name = "EADRBA C-08CL",
                             SerialNumber = "MUM030746"
                         },
                         new
                         {
-                            Id = new Guid("49cf1665-0991-4225-b66a-c3f0faac30d0"),
+                            Id = new Guid("66610c67-074c-43f9-9607-581435eabb2a"),
                             Description = "B Fin",
                             Name = "EAEATJ C-22K",
                             SerialNumber = "MUM029340"
                         },
                         new
                         {
-                            Id = new Guid("3cd00b26-0f79-41a0-9a0b-53bf569fa68e"),
+                            Id = new Guid("4953ad33-a8a0-46fc-a775-a902c97ec75d"),
                             Description = "A Fin",
                             Name = "EAGUUU C-08CL",
                             SerialNumber = "MUM030683"
                         },
                         new
                         {
-                            Id = new Guid("169d6027-2165-47f7-96e4-7d274e457d89"),
+                            Id = new Guid("da0d6031-4532-4314-9725-bbb8bf7aada3"),
                             Description = "C Estetisk stygg",
                             Name = "EAHBYT C-10CL",
                             SerialNumber = "MUM030741"
                         },
                         new
                         {
-                            Id = new Guid("d3788f7d-a463-4bc5-8d4e-510513dae67a"),
+                            Id = new Guid("8fb1111f-b0c5-4097-bc93-755413fec430"),
                             Description = "A Fin",
                             Name = "EAJFGU C-10LL",
                             SerialNumber = "MUM029330"
                         },
                         new
                         {
-                            Id = new Guid("1c472b8d-17a5-44b6-a5b7-e982f9a7666c"),
+                            Id = new Guid("569918b6-eb5d-49b9-9fb9-645dfb71dbfb"),
                             Description = "C Estetisk stygg",
                             Name = "EAKNKF C-10CL",
                             SerialNumber = "MUM030743"
                         },
                         new
                         {
-                            Id = new Guid("5268323a-7572-46a0-8b08-c7cf785b8c05"),
+                            Id = new Guid("c862e37d-a574-4442-be50-f9cbbe3b926e"),
                             Description = "C Estetisk stygg",
                             Name = "EALUNJ C-10L",
                             SerialNumber = "MUM030509"
                         },
                         new
                         {
-                            Id = new Guid("8cfea25b-2a65-45f0-bb7c-170c6aea13b4"),
+                            Id = new Guid("70af57fc-7279-4868-b005-cf1b04b8e058"),
                             Description = "C Estetisk stygg",
                             Name = "EANVZX C-22K",
                             SerialNumber = "MUM030724"
@@ -395,12 +395,12 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("06de7551-ca60-4c5c-9c27-a2df6af7fd64"),
+                            Id = new Guid("03c93f3f-3381-4690-8e52-96b3c224a74d"),
                             Name = "Norsk Gjenvinning AS"
                         },
                         new
                         {
-                            Id = new Guid("e76173a3-676e-421e-9e4f-4a64efb35544"),
+                            Id = new Guid("ca5515f4-89c1-4558-8e06-075f38a20a2e"),
                             Name = "SmartContainer AS"
                         });
                 });

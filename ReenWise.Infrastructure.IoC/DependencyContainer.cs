@@ -25,12 +25,12 @@ namespace ReenWise.Infrastructure.IoC
 
             // Domain Handlers
             //services.AddScoped<IRequestHandler<CreateEquipmentCommand, bool>, EquipmentDto>();
-            services.AddScoped<IRequestHandler<CreateEquipmentCommand, EquipmentDto>, CreateEquipmentHandler>();
-            services.AddScoped<IRequestHandler<CreateVehicleCommand, VehicleDto>, CreateVehicleHandler>();
-            services.AddScoped<IRequestHandler<GetAllEquipmentQuery, List<EquipmentDto>>, GetAllEquipmentHandler>();
-            services.AddScoped<IRequestHandler<GetAllVehicleQuery, List<VehicleDto>>, GetAllVehicleHandler>();
-            services.AddScoped<IRequestHandler<GetEquipmentByIdQuery, EquipmentDto>, GetEquipmentByIdHandler > ();
-            services.AddScoped<IRequestHandler<GetVehicleByIdQuery, VehicleDto>, GetVehicleByIdHandler>();
+            services.AddScoped<IRequestHandler<CreateEquipmentCommand, Equipment>, CreateEquipmentHandler>();
+            services.AddScoped<IRequestHandler<CreateVehicleCommand, Vehicle>, CreateVehicleHandler>();
+            services.AddScoped<IRequestHandler<GetAllEquipmentQuery, List<Equipment>>, GetAllEquipmentHandler>();
+            services.AddScoped<IRequestHandler<GetAllVehicleQuery, List<Vehicle>>, GetAllVehicleHandler>();
+            services.AddScoped<IRequestHandler<GetEquipmentByIdQuery, Equipment>, GetEquipmentByIdHandler > ();
+            services.AddScoped<IRequestHandler<GetVehicleByIdQuery, Vehicle>, GetVehicleByIdHandler>();
             services.AddScoped<IRequestHandler<UpdateEquipmentCommand, bool>, UpdateEquipmentHandler>();
             services.AddScoped<IRequestHandler<UpdateVehicleCommand, bool>, UpdateVehicleHandler>();
             services.AddScoped<IRequestHandler<DeleteEquipmentCommand, bool>, DeleteEquipmentHandler>();

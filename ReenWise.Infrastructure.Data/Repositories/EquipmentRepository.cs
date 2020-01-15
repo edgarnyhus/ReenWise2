@@ -28,14 +28,68 @@ namespace ReenWise.Infrastructure.Data.Repositories
             var query = _dbContext.Set<Equipment>()
                 .Include(_dbContext.GetIncludePaths(typeof(Equipment)))
                 .Include(x => x.Locations);
-            var result = await query
-                .ToListAsync();
+            var result = await query.ToListAsync();
             return result as IEnumerable<Equipment>;
 
         }
 
 
         public async Task<Equipment> Create(Equipment entity)
+        {
+            CheckProperties(entity);
+            var result = await base.Create(entity);
+
+            return entity;
+        }
+
+        public async Task<bool> Update(Guid id, Equipment entity)
+        {
+            // Update entity
+            // 1. Create instance for DbContext class
+            // 2. Retrieve entity by key
+            // 3. Make changes on entity's properties
+            // 4. Save changes
+            //using (var context = new StoreDbContext())
+            //{
+            //    // Retrieve entity by id
+            //    // Answer for question #1
+            //    var entity = context.Products.FirstOrDefault(item => item.ProductID == id);
+
+            //    // Validate entity is not null
+            //    if (entity != null)
+            //    {
+            //        // Answer for question #2
+
+            //        // Make changes on entity
+            //        entity.UnitPrice = 49.99m;
+            //        entity.Description = "Collector's edition";
+
+            //        // Update entity in DbSet
+            //        context.Products.Update(entity);
+
+            //        // Save changes in database
+            //        context.SaveChanges();
+            //    }
+            //}
+
+            if (id == Guid.Empty)
+                return false;
+
+            var _entity = GetById(id);
+            if (_entity == null)
+            {
+                return await Create(entity) != null;
+            }
+
+            CheckProperties(entity);
+            return await base.Update(id, entity);
+            var result = _dbContext.Equipment.Update(entity);
+            //_dbContext.Entry<T>(_entity).State = EntityState.Detached;
+            await _dbContext.SaveChangesAsync();
+            return result != null ? true : false;
+        }
+
+        private void CheckProperties(Equipment entity)
         {
             if (entity.Model != null)
             {
@@ -82,33 +136,6 @@ namespace ReenWise.Infrastructure.Data.Repositories
                     entity.OrganizationId = _result.Result.Id;
                 }
             }
-
-            //if (entity.Locations != null)
-            //{
-            //    var location = entity.Locations.FirstOrDefault();
-            //    if (location.Id == Guid.Empty)
-            //    {
-            //        var _result = GetOrCreateLocation(location);
-            //        location.Id = _result.Result.Id;
-            //        entity.Locations.Clear();
-            //        entity.Locations.Add(_result.Result);
-            //    }
-            //}
-            //if (entity.Temperatures != null)
-            //{
-            //    var temperature = entity.Temperatures.FirstOrDefault();
-            //    if (temperature.Id == Guid.Empty)
-            //    {
-            //        var _result = GetOrCreateTemperature(temperature);
-            //        temperature.Id = _result.Result.Id;
-            //        entity.Temperatures.Clear();
-            //        entity.Temperatures.Add(_result.Result);
-            //    }
-            //}
-
-            var result = await base.Create(entity);
-
-            return entity;
         }
 
         public async Task<Organization> GetOrCreateOrganization(Organization organization)
@@ -203,33 +230,6 @@ namespace ReenWise.Infrastructure.Data.Repositories
             return entity;
         }
 
-        // Update entity
-        // 1. Create instance for DbContext class
-        // 2. Retrieve entity by key
-        // 3. Make changes on entity's properties
-        // 4. Save changes
-        //using (var context = new StoreDbContext())
-        //{
-        //    // Retrieve entity by id
-        //    // Answer for question #1
-        //    var entity = context.Products.FirstOrDefault(item => item.ProductID == id);
-
-        //    // Validate entity is not null
-        //    if (entity != null)
-        //    {
-        //        // Answer for question #2
-
-        //        // Make changes on entity
-        //        entity.UnitPrice = 49.99m;
-        //        entity.Description = "Collector's edition";
-
-        //        // Update entity in DbSet
-        //        context.Products.Update(entity);
-
-        //        // Save changes in database
-        //        context.SaveChanges();
-        //    }
-        //}
 
 
     }

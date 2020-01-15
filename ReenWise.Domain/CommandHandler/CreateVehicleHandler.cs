@@ -13,7 +13,7 @@ using ReenWise.Domain.Models.Mirror;
 
 namespace ReenWise.Domain.CommandHandler
 {
-    public class CreateVehicleHandler : IRequestHandler<CreateVehicleCommand, VehicleDto>
+    public class CreateVehicleHandler : IRequestHandler<CreateVehicleCommand, Vehicle>
     {
         private readonly IRepository<Vehicle> _repository;
         private readonly IMapper _mapper;
@@ -23,12 +23,10 @@ namespace ReenWise.Domain.CommandHandler
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<VehicleDto> Handle(CreateVehicleCommand request, CancellationToken cancellationToken)
+        public async Task<Vehicle> Handle(CreateVehicleCommand command, CancellationToken cancellationToken)
         {
-            var command = _mapper.Map<VehicleContract, Vehicle>(request.VehicleContract);
-            var result = await _repository.Create(command);
-            //_logger.LogInformation($"Created equipment: {equipment.id}");
-            return _mapper.Map<Vehicle, VehicleDto>(result);
+            var result = await _repository.Create(command.Vehicle);
+            return result;
         }
     }
 }

@@ -12,7 +12,7 @@ using ReenWise.Domain.Queries;
 
 namespace ReenWise.Domain.CommandHandler
 {
-    public class GetVehicleByIdHandler : IRequestHandler<GetVehicleByIdQuery, VehicleDto>
+    public class GetVehicleByIdHandler : IRequestHandler<GetVehicleByIdQuery, Vehicle>
     {
         private readonly IMapper _mapper;
         private readonly IRepository<Vehicle> _repository;
@@ -23,10 +23,10 @@ namespace ReenWise.Domain.CommandHandler
             _repository = repository;
         }
 
-        public async Task<VehicleDto> Handle(GetVehicleByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Vehicle> Handle(GetVehicleByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _repository.GetById(request.Id);
-            return _mapper.Map<Vehicle, VehicleDto>(result);
+            return result;
         }
     }
 

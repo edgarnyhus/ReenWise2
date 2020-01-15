@@ -15,20 +15,19 @@ using ReenWise.Domain.Interfaces;
 using ReenWise.Domain.Contracts;
 using ReenWise.Domain.Queries;
 using ReenWise.Domain.Queries.Helpers;
+using System.Collections.ObjectModel;
 
 namespace ReenWise.Application.Services
 {
     public class EquipmentService : IEquipmentService
     {
         private readonly IMapper _mapper;
-        private readonly IRepository<Equipment> _repository;
         private readonly IMediator _mediator;
         private readonly ILogger<EquipmentService> _logger;
 
-        public EquipmentService(IMapper mapper, IRepository<Equipment> repository, IMediator mediator, ILogger<EquipmentService> logger)
+        public EquipmentService(IMapper mapper, IMediator mediator, ILogger<EquipmentService> logger)
         {
             _mapper = mapper;
-            _repository = repository;
             _mediator = mediator;
             _logger = logger;
         }
@@ -38,30 +37,53 @@ namespace ReenWise.Application.Services
             var query = new GetAllEquipmentQuery(queryParameters);
             _logger.LogInformation($"GetEquipment: Making query {query.ToString()}");
             var result = await _mediator.Send(query);
-            return result;
+            var response = _mapper.Map<List<Equipment>, List<EquipmentDto>>(result);
+            // Just return one instance of location as defined in EquipmentDto - not a list
+            foreach (var entity in result)
+            {
+                var _locationDto = _mapper.Map<Location, LocationDto>(entity.Locations.FirstOrDefault());
+                var _entityDto = response.Find(x => x.id == entity.Id);
+                _entityDto.location = _locationDto;
+            }
+
+            return response;
         }
       
         public async Task<EquipmentDto> GetEquipmentById(Guid id)
         {
             var query = new GetEquipmentByIdQuery(id);
-            _logger.LogInformation($"GetEquipmentById: Making query {query.ToString()}");
-            var result = await _mediator.Send(query);
-            return result;
+            var entity = await _mediator.Send(query);
+            var response = _mapper.Map<Equipment, EquipmentDto>(entity);
+            var _locationDto = _mapper.Map<Location, LocationDto>(entity.Locations.FirstOrDefault());
+            response.location = _locationDto;
+
+            return response;
         }
 
         public async Task<EquipmentDto> CreateEquipment(EquipmentContract contract)
-        {                
-            var command = new CreateEquipmentCommand(contract);
-            _logger.LogInformation($"CreateEquipment: Making command{command.ToString()}");
-            var result = await _mediator.Send(command);
+        {
+            var entity = _mapper.Map<EquipmentContract, Equipment>(contract);
+            ConvertPropertyToCollection(entity, contract);
+
+            var command = new CreateEquipmentCommand(entity);
+            entity = await _mediator.Send(command);
+
+            var _location = entity.Locations.FirstOrDefault();
+            var result = _mapper.Map<Equipment, EquipmentDto>(entity);
+            result.location = _mapper.Map<Location, LocationDto>(_location);
+            _logger.LogInformation($"Created equipment with id {result.id}");
+
             return result;
         }
 
         public async Task<bool> UpdateEquipment(Guid id, EquipmentContract contract)
         {
-            var command = new UpdateEquipmentCommand(id, contract);
-            _logger.LogInformation($"UpdateEquipment: Making command {command.ToString()}");
+            var entity = _mapper.Map<EquipmentContract, Equipment>(contract);
+            ConvertPropertyToCollection(entity, contract);
+
+            var command = new UpdateEquipmentCommand(id, entity);
             var result = await _mediator.Send(command);
+
             return result;
         }
 
@@ -71,6 +93,24 @@ namespace ReenWise.Application.Services
             _logger.LogInformation($"DeleteEquipment: {command.ToString()}");
             var result = await _mediator.Send(command);
             return result;
+        }
+
+        private void ConvertPropertyToCollection(Equipment entity, EquipmentContract contract)
+        {
+            if (contract.location != null)
+            {
+                var location = _mapper.Map<LocationContract, Location>(contract.location);
+                if (entity.Locations == null)
+                    entity.Locations = new Collection<Location>();
+                entity.Locations.Add(location);
+            }
+            if (contract.temperature != null)
+            {
+                var temperature = _mapper.Map<TemperatureContract, Temperature>(contract.temperature);
+                if (entity.Temperatures == null)
+                    entity.Temperatures = new Collection<Temperature>();
+                entity.Temperatures.Add(temperature);
+            }
         }
     }
 }

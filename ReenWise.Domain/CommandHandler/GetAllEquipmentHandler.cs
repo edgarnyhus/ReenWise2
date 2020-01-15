@@ -16,7 +16,7 @@ using ReenWise.Domain.Queries;
 
 namespace ReenWise.Domain.CommandHandler
 {
-    public class GetAllEquipmentHandler : IRequestHandler<GetAllEquipmentQuery, List<EquipmentDto>>
+    public class GetAllEquipmentHandler : IRequestHandler<GetAllEquipmentQuery, List<Equipment>>
     {
         private readonly IRepository<Equipment> _repository;
         private readonly IMapper _mapper;
@@ -29,20 +29,10 @@ namespace ReenWise.Domain.CommandHandler
             _logger = logger;
         }
 
-        public async Task<List<EquipmentDto>> Handle(GetAllEquipmentQuery request, CancellationToken cancellationToken)
+        public async Task<List<Equipment>> Handle(GetAllEquipmentQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"GetAllEquipmentHandler: Making query {request.ToString()}");
             var result =  await _repository.GetAll();
-            _logger.LogInformation($"GetAllEquipmentHandler: result {result.ToString()}");
-            var response = _mapper.Map<List<Equipment>, List<EquipmentDto>>((List<Equipment>)result);
-            // Just return one instance of location as defined in EquipmentDto - not an array
-            foreach (var entity in result)
-            {
-                var _locationDto = _mapper.Map<Location, LocationDto>(entity.Locations.FirstOrDefault());
-                var _entityDto = response.Find(x => x.id == entity.Id);
-                _entityDto.location = _locationDto;
-            }
-            return response;
+            return (List<Equipment>) result;
         }
     }
 }

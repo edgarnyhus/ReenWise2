@@ -23,11 +23,9 @@ namespace ReenWise.Domain.CommandHandler
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<bool> Handle(UpdateVehicleCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateVehicleCommand command, CancellationToken cancellationToken)
         {
-            var command = _mapper.Map<VehicleContract, Vehicle>(request.VehicleContract);
-            var result = await _repository.Update(request.Id, command);
-            //_logger.LogInformation($"Created equipment: {equipment.id}");
+            var result = await _repository.Update(command.Vehicle.Id, command.Vehicle);
             return result;
         }
     }

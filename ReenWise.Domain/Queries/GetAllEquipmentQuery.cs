@@ -5,10 +5,11 @@ using MediatR;
 using ReenWise.Domain.Dtos;
 using ReenWise.Domain.Queries.Helpers;
 using ReenWise.Domain.Models;
+using ReenWise.Domain.Models.Mirror;
 
 namespace ReenWise.Domain.Queries
 {
-    public class GetAllEquipmentQuery :IRequest<List<EquipmentDto>>
+    public class GetAllEquipmentQuery :IRequest<List<Equipment>>
     {
         public EquipmentQueryParameters QueryParameters { get; }
 

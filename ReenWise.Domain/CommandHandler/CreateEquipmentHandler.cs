@@ -18,7 +18,7 @@ using ReenWise.Domain.Models.Mirror;
 
 namespace ReenWise.Domain.CommandHandler
 {
-    public class CreateEquipmentHandler : IRequestHandler<CreateEquipmentCommand, EquipmentDto>
+    public class CreateEquipmentHandler : IRequestHandler<CreateEquipmentCommand, Equipment>
     {
         //private readonly IRepository<Equipment> _repository;
         private readonly IEquipmentRepository _repository;
@@ -32,32 +32,10 @@ namespace ReenWise.Domain.CommandHandler
             _logger = logger;
         }
 
-        public async Task<EquipmentDto> Handle(CreateEquipmentCommand command, CancellationToken cancellationToken)
+        public async Task<Equipment> Handle(CreateEquipmentCommand command, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<EquipmentContract, Equipment>(command.EquipmentContract);
-            if (command.EquipmentContract.location != null)
-            {
-                var location = _mapper.Map<LocationContract, Location>(command.EquipmentContract.location);
-                if (entity.Locations == null)
-                    entity.Locations = new Collection<Location>();
-                entity.Locations.Add(location);
-            }
-            if (command.EquipmentContract.temperature != null)
-            {
-                var temperature = _mapper.Map<TemperatureContract, Temperature>(command.EquipmentContract.temperature);
-                if (entity.Temperatures == null)
-                    entity.Temperatures = new Collection<Temperature>();
-                entity.Temperatures.Add(temperature);
-            }
-
-            entity = await _repository.Create(entity);
-
-            //_logger.LogInformation($"Created equipment: {result.Id}");
-            var _location = entity.Locations.FirstOrDefault();
-            var response = _mapper.Map<Equipment, EquipmentDto>(entity);
-            _logger.LogInformation($"Created equipment: {response.ToString()}");
-            response.location = _mapper.Map<Location, LocationDto>(_location);
-            return response;
+            var result = await _repository.Create(command.Equipment);
+            return result;
         }
     }
 }

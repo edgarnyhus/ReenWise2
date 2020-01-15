@@ -11,5 +11,6 @@ namespace ReenWise.Domain.Interfaces
         Task<IEnumerable<Equipment>> GetAll();
 
         public Task<Equipment> Create(Equipment entity);
+        public Task<bool> Update(Guid id, Equipment entity);
     }
 }
