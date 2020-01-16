@@ -34,10 +34,10 @@ namespace ReenWise.Infrastructure.Data.Repositories
         }
 
 
-        public async Task<Equipment> Create(Equipment entity)
+        public async Task<Equipment> Add(Equipment entity)
         {
             CheckProperties(entity);
-            var result = await base.Create(entity);
+            var result = await base.Add(entity);
 
             return entity;
         }
@@ -78,7 +78,7 @@ namespace ReenWise.Infrastructure.Data.Repositories
             var _entity = GetById(id);
             if (_entity == null)
             {
-                return await Create(entity) != null;
+                return await Add(entity) != null;
             }
 
             CheckProperties(entity);
@@ -161,7 +161,19 @@ namespace ReenWise.Infrastructure.Data.Repositories
             {
                 var result = await _dbContext.Models.AddAsync(model);
                 entity = result.Entity;
-            }
+            } 
+            //else
+            //{
+            //    foreach (var prop in entity.Model.GetType().GetProperties())
+            //    {
+            //        var propname = prop.Name;
+            //        if (!prop.Equals(model))
+            //        {
+            //            prop.SetValue(entity.Model, model);
+            //        }
+            //    }
+            //}
+            
             await _dbContext.SaveChangesAsync();
             return entity;
         }

@@ -34,7 +34,7 @@ namespace ReenWise.Domain.CommandHandler
 
         public async Task<Equipment> Handle(CreateEquipmentCommand command, CancellationToken cancellationToken)
         {
-            var result = await _repository.Create(command.Equipment);
+            var result = await _repository.Add(command.Equipment);
             return result;
         }
     }

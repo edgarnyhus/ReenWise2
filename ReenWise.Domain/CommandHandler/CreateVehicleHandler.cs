@@ -25,7 +25,7 @@ namespace ReenWise.Domain.CommandHandler
         }
         public async Task<Vehicle> Handle(CreateVehicleCommand command, CancellationToken cancellationToken)
         {
-            var result = await _repository.Create(command.Vehicle);
+            var result = await _repository.Add(command.Vehicle);
             return result;
         }
     }

@@ -9,17 +9,20 @@ namespace ReenWise.Domain.Interfaces
 {
     public interface IRepository<T> where T : EntityBase
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate = null);
-
+        //Task<IEnumerable<T>> GetAll();
+        //Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate = null);
+        Task<IEnumerable<T>> GetAll(ISpecification<T> specification = null);
         Task<T> GetById(Guid id);
-
-        Task<T> Create(T entity);
-
+        Task<T> Add(T entity);
+        Task<bool> AddRange(IEnumerable<T> entities);
         Task<bool> Update(Guid id, T entity);
-
-        Task<bool> Delete(Guid id);
-
+        Task<bool> Remove(Guid id);
+        Task<bool> Remove(T entity);
+        Task<bool> RemoveRange(IEnumerable<T> entities);
+        Task<bool> Contains(ISpecification<T> specification = null);
+        Task<bool> Contains(Expression<Func<T, bool>> predicate);
+        Task<int> Count(ISpecification<T> specification = null);
+        Task<int> Count(Expression<Func<T, bool>> predicate);
     }
 
     public abstract class EntityBase
@@ -28,26 +31,4 @@ namespace ReenWise.Domain.Interfaces
         [StringLength(128)]
         public Guid Id { get; /*protected internal*/ set; }
     }
-
-    public interface _IRepository<T> where T : class
-    {
-        T FindById(Guid id);
-
-        IEnumerable<T> Find(ISpecification<T> specification = null);
-
-        void Add(T entity);
-        void AddRange(IEnumerable<T> entities);
-
-        void Remove(T entity);
-        void RemoveRange(IEnumerable<T> entities);
-
-        void Update(T entity);
-
-        bool Contains(ISpecification<T> specification = null);
-        bool Contains(Expression<Func<T, bool>> predicate);
-
-        int Count(ISpecification<T> specification = null);
-        int Count(Expression<Func<T, bool>> predicate);
-    }
-
 }

@@ -13,6 +13,9 @@ namespace ReenWise.Infrastructure.Data.Repositories
         {
             var query = inputQuery;
 
+            if (specification == null)
+                return query;
+
             // modify the IQueryable using the specification's criteria expression
             if (specification.Criteria != null)
             {

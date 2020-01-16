@@ -24,8 +24,8 @@ namespace ReenWise.Domain.CommandHandler
 
         public async Task<bool> Handle(DeleteVehicleCommand request, CancellationToken cancellationToken)
         {
-            await  _repository.Delete(request.Id);
-            return await Task.FromResult(true);
+            var result = await  _repository.Remove(request.Id);
+            return result;
         }
     }
 }

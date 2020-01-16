@@ -31,7 +31,7 @@ namespace ReenWise.Domain.CommandHandler
 
         public async Task<List<Equipment>> Handle(GetAllEquipmentQuery request, CancellationToken cancellationToken)
         {
-            var result =  await _repository.GetAll();
+            var result =  await _repository.GetAll(request.Specification);
             return (List<Equipment>) result;
         }
     }

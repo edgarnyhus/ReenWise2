@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ReenWise.Application.Interfaces;
-using ReenWise.Domain.CommandHandler;
 using ReenWise.Domain.Dtos;
 using ReenWise.Domain.Commands;
 using ReenWise.Domain.Models.Mirror;
-using ReenWise.Domain.Interfaces;
 using ReenWise.Domain.Contracts;
 using ReenWise.Domain.Queries;
 using ReenWise.Domain.Queries.Helpers;
 using System.Collections.ObjectModel;
+using ReenWise.Domain.Specifications;
 
 namespace ReenWise.Application.Services
 {
@@ -34,8 +32,10 @@ namespace ReenWise.Application.Services
 
         public async Task<IEnumerable<EquipmentDto>> GetEquipment(EquipmentQueryParameters queryParameters)
         {
-            var query = new GetAllEquipmentQuery(queryParameters);
+            
+            var query = new GetAllEquipmentQuery(new GetAllEquipmentSpecification());
             _logger.LogInformation($"GetEquipment: Making query {query.ToString()}");
+
             var result = await _mediator.Send(query);
             var response = _mapper.Map<List<Equipment>, List<EquipmentDto>>(result);
             // Just return one instance of location as defined in EquipmentDto - not a list

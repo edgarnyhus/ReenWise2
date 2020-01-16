@@ -22,7 +22,7 @@ namespace ReenWise.Domain.CommandHandler
 
         public async Task<bool> Handle(DeleteEquipmentCommand request, CancellationToken cancellationToken)
         {
-            var result = await _repository.Delete(request.Id);
+            var result = await _repository.Remove(request.Id);
             return result;
         }
     }
