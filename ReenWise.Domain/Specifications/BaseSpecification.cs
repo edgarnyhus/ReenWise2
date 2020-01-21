@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using ReenWise.Domain.Interfaces;
+using ReenWise.Domain.Queries.Helpers;
 
 namespace ReenWise.Domain.Specifications
 {
@@ -17,16 +18,27 @@ namespace ReenWise.Domain.Specifications
 
         }
 
-        public Expression<Func<T, bool>> Criteria { get; }
+        public string Sql { get; set; }
+        public Expression<Func<T, bool>> Criteria { get; set; }
         public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
         public List<string> IncludeStrings { get; } = new List<string>();
+        public List<Expression<Func<T, object>>> IncludeFilters { get; set; } = new List<Expression<Func<T, object>>>();
         public Expression<Func<T, object>> OrderBy { get; private set; }
         public Expression<Func<T, object>> OrderByDescending { get; private set; }
         public Expression<Func<T, object>> GroupBy { get; private set; }
 
-        public int Take { get; private set; }
-        public int Skip { get; private set; }
-        public bool IsPagingEnabled { get; private set; } = false;
+        public virtual IQueryParameters Parameters { get; set;  }
+        public bool WithinSquare { get; set; }
+        public bool WithinRadius { get; set; }
+
+        public int Take { get; set; }
+        public int Skip { get; set; }
+        public bool IsPagingEnabled { get; set; } = false;
+
+        protected virtual void AddSql(string sqlExpression)
+        {
+            Sql = sqlExpression;
+        }
 
         protected virtual void AddInclude(Expression<Func<T, object>> includeExpression)
         {
@@ -36,6 +48,11 @@ namespace ReenWise.Domain.Specifications
         protected virtual void AddInclude(string includeString)
         {
             IncludeStrings.Add(includeString);
+        }
+
+        protected virtual void AddIncludeFilter(Expression<Func<T, object>> includeExpression)
+        {
+            IncludeFilters.Add(includeExpression);
         }
 
         protected virtual void ApplyPaging(int skip, int take)

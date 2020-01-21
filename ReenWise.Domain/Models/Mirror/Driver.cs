@@ -18,6 +18,7 @@ namespace ReenWise.Domain.Models.Mirror
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public string? Email { get; set; }
+        [ForeignKey("OrganizationId")]
         public virtual Organization? Organization { get; set; }
         public Guid? OrganizationId { get; set; }
         public virtual ICollection<Vehicle>? Vehicles { get; set; }

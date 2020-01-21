@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetTopologySuite.Geometries;
 
 namespace ReenWise.Api.Models
 {
     public class Location
     {
         public string id { get; set; }
+        public Point Point { get; set; }
         public float latitude { get; set; }
         public float longitude { get; set; }
         public int speed { get; set; }

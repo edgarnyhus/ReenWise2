@@ -10,10 +10,9 @@ namespace ReenWise.Domain.Queries
 {
     public class GetAllEquipmentQuery :IRequest<List<Equipment>>
     {
-        public EquipmentQueryParameters QueryParameters { get; }
-        public GetAllEquipmentSpecification Specification { get; set; }
+        public GetEquipmentSpecification Specification { get; set; }
 
-        public GetAllEquipmentQuery(GetAllEquipmentSpecification specification)
+        public GetAllEquipmentQuery(GetEquipmentSpecification specification)
         {
             Specification = specification;
         }

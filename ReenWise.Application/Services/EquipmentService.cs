@@ -12,8 +12,11 @@ using ReenWise.Domain.Models.Mirror;
 using ReenWise.Domain.Contracts;
 using ReenWise.Domain.Queries;
 using ReenWise.Domain.Queries.Helpers;
-using System.Collections.ObjectModel;
 using ReenWise.Domain.Specifications;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
 
 namespace ReenWise.Application.Services
 {
@@ -30,10 +33,10 @@ namespace ReenWise.Application.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<EquipmentDto>> GetEquipment(EquipmentQueryParameters queryParameters)
+        public async Task<IEnumerable<EquipmentDto>> GetEquipment(QueryParameters queryParameters)
         {
             
-            var query = new GetAllEquipmentQuery(new GetAllEquipmentSpecification());
+            var query = new GetAllEquipmentQuery(new GetEquipmentSpecification(queryParameters));
             _logger.LogInformation($"GetEquipment: Making query {query.ToString()}");
 
             var result = await _mediator.Send(query);
@@ -41,21 +44,27 @@ namespace ReenWise.Application.Services
             // Just return one instance of location as defined in EquipmentDto - not a list
             foreach (var entity in result)
             {
-                var _locationDto = _mapper.Map<Location, LocationDto>(entity.Locations.FirstOrDefault());
-                var _entityDto = response.Find(x => x.id == entity.Id);
-                _entityDto.location = _locationDto;
+                if (entity.Locations != null)
+                {
+                    var _locationDto = _mapper.Map<Location, LocationDto>(entity.Locations.FirstOrDefault());
+                    var _entityDto = response.Find(x => x.id == entity.Id);
+                    _entityDto.location = _locationDto;
+                }
             }
 
             return response;
         }
-      
+
         public async Task<EquipmentDto> GetEquipmentById(Guid id)
         {
-            var query = new GetEquipmentByIdQuery(id);
+            var query = new GetEquipmentByIdQuery(id, new GetEquipmentSpecification(id));
             var entity = await _mediator.Send(query);
             var response = _mapper.Map<Equipment, EquipmentDto>(entity);
-            var _locationDto = _mapper.Map<Location, LocationDto>(entity.Locations.FirstOrDefault());
-            response.location = _locationDto;
+            if (entity.Locations != null)
+            {
+                var _locationDto = _mapper.Map<Location, LocationDto>(entity.Locations.FirstOrDefault());
+                response.location = _locationDto;
+            }
 
             return response;
         }
@@ -102,7 +111,11 @@ namespace ReenWise.Application.Services
                 var location = _mapper.Map<LocationContract, Location>(contract.location);
                 if (entity.Locations == null)
                     entity.Locations = new Collection<Location>();
+                //location.Point = CreatePoint(location.Latitude, location.Longitude);
                 entity.Locations.Add(location);
+
+                var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+                entity.Location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate(location.Latitude, location.Longitude));
             }
             if (contract.temperature != null)
             {
@@ -112,5 +125,13 @@ namespace ReenWise.Application.Services
                 entity.Temperatures.Add(temperature);
             }
         }
+
+        //public static DbGeography CreatePoint(double latitude, double longitude)
+        //{
+        //    var text = string.Format(CultureInfo.InvariantCulture.NumberFormat,
+        //        "POINT({0} {1})", longitude, latitude);
+        //    // 4326 is most common coordinate system used by GPS/Maps
+        //    return DbGeography.PointFromText(text, 4326);
+        //}
     }
 }

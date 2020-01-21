@@ -30,9 +30,9 @@ namespace ReenWise.Api.Controllers
         // GET: api/Equipment
         [Route("~/api/Equipment")]
         [HttpGet]
-        public async Task<IActionResult> GetEquipment([FromQuery] EquipmentQueryParameters queryParameters)
+        public async Task<IActionResult> GetEquipment([FromQuery] QueryParameters queryParameters)
         {
-            _logger.LogInformation($"EquipmentController: GET equipement with paramerters={queryParameters.ToString()}");
+            _logger.LogInformation($"EquipmentController: GET equipment with parameters={queryParameters.ToString()}");
 
             var result = await _equipmentService.GetEquipment(queryParameters);
             var metadata = new
@@ -59,6 +59,29 @@ namespace ReenWise.Api.Controllers
         {
             var result = await _equipmentService.GetEquipmentById(id);
             return result != null ? (IActionResult)Ok(result) : NotFound();
+        }
+
+        // GET: api/Equipment/WithinSquare
+        [Route("~/api/Equipment/WithinSquare")]
+        [HttpGet]
+        public async Task<IActionResult> GetEquipmentWithinSquare([FromQuery] QueryParameters queryParameters)
+        {
+            var result = await _equipmentService.GetEquipment(queryParameters);
+            var metadata = new
+            {
+                //result.TotalCount,
+                //result.PageSize,
+                //result.CurrentPage,
+                //result.TotalPages,
+                //result.HasNext,
+                //result.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            //_logger.LogInfo($"Returned {result.TotalCount} equipment from database.");
+
+            return Ok(result);
         }
 
         // POST: api/equipment

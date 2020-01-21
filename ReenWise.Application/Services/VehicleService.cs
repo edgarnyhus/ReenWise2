@@ -14,6 +14,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using ReenWise.Domain.Contracts;
 using ReenWise.Domain.Queries;
+using ReenWise.Domain.Specifications;
 
 namespace ReenWise.Application.Services
 {
@@ -32,7 +33,7 @@ namespace ReenWise.Application.Services
 
         public async Task<IEnumerable<VehicleDto>> GetVehicles()
         {
-            var query = new GetAllVehiclesQuery();
+            var query = new GetAllVehicleQuery(new GetVehicleSpecification());
             var result = await _mediator.Send(query);
             var response = _mapper.Map<List<Vehicle>, List<VehicleDto>>(result);
             // Just return one instance of location as defined in VehicleDto - not a List

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ReenWise.Domain.Interfaces;
 
 namespace ReenWise.Domain.Models.Mirror
@@ -24,8 +25,9 @@ namespace ReenWise.Domain.Models.Mirror
         public float? Volume { get; set; }
         public string? Attachment { get; set; }
 
+        [ForeignKey("ManufacturerId")]
         public virtual Manufacturer? Manufacturer { get; set; }
-        public Guid? ManufactorerId { get; set; }
+        public Guid? ManufacturerId { get; set; }
         public virtual ICollection<Equipment>? Equipments { get; set; }
         public virtual ICollection<Vehicle>? Vehicles { get; set; }
     }

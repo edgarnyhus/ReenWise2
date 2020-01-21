@@ -6,10 +6,10 @@ namespace ReenWise.Domain.Queries.Helpers
 {
     public abstract class QueryStringParameters
     {
-        const int maxPageSize = 50;
+        const int maxPageSize = 1000;
         public int PageNumber { get; set; } = 1;
 
-        private int _pageSize = 10;
+        private int _pageSize = 100;
         public int PageSize {
             get {
                 return _pageSize;

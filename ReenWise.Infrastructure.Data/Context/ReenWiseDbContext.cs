@@ -16,6 +16,7 @@ namespace ReenWise.Infrastructure.Data.Context
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<LicensePlate> LicensePlates { get; set; }
+        //public DbSet<GeoLocation> Locations { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Model> Models { get; set; }
@@ -44,6 +45,15 @@ namespace ReenWise.Infrastructure.Data.Context
                 .Property(p => p.Email)
                 .HasMaxLength(32);
 
+            //modelBuilder.Entity<Driver>()
+            //    .HasOne(p => p.Organization)
+            //    .WithMany(b => b.Drivers)
+            //    .HasForeignKey(p => p.OrganizationId);
+
+            //modelBuilder.Entity<Driver>()
+            //    .HasMany(p => p.Vehicles)
+            //    .WithOne(b => b.Driver);
+
             modelBuilder.Entity<Equipment>()
                 .Property(p => p.Alias)
                 .HasMaxLength(128)
@@ -57,6 +67,38 @@ namespace ReenWise.Infrastructure.Data.Context
                 .Property(p => p.Notes)
                 .HasMaxLength(1024);
 
+            //modelBuilder.Entity<Equipment>()
+            //    .HasOne(p => p.Model)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.ModelId);
+
+            //modelBuilder.Entity<Equipment>()
+            //    .HasMany(p => p.Locations)
+            //    .WithOne();
+
+            //modelBuilder.Entity<Equipment>()
+            //    .HasMany(p => p.Temperatures)
+            //    .WithOne();
+
+            //modelBuilder.Entity<Equipment>()
+            //    .HasOne(p => p.Organization)
+            //    .WithMany(b => b.Equipment)
+            //    .HasForeignKey(p => p.OrganizationId);
+
+            //modelBuilder.Entity<Equipment>()
+            //    .HasOne(p => p.OperatingHours)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.OperatingHoursId);
+
+            //modelBuilder.Entity<Equipment>()
+            //    .HasOne(p => p.InitialOperatingHours)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.InitialOperatingHoursId);
+
+            //modelBuilder.Entity<Equipment>()
+            //    .HasOne(p => p.Unit)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.UnitId);
 
             modelBuilder.Entity<LicensePlate>()
                 .Property(p => p.Number)
@@ -65,10 +107,6 @@ namespace ReenWise.Infrastructure.Data.Context
 
             modelBuilder.Entity<Location>()
                 .Property(p => p.Latitude)
-                .IsRequired();
-
-            modelBuilder.Entity<Location>()
-                .Property(p => p.Longitude)
                 .IsRequired();
 
             modelBuilder.Entity<Location>()
@@ -88,6 +126,18 @@ namespace ReenWise.Infrastructure.Data.Context
                 .HasMaxLength(128)
                 .IsRequired();
 
+            //modelBuilder.Entity<Manufacturer>()
+            //    .HasMany(p => p.Equipment)
+            //    .WithOne();
+
+            //modelBuilder.Entity<Manufacturer>()
+            //    .HasMany(p => p.Vehicles)
+            //    .WithOne();
+
+            //modelBuilder.Entity<Manufacturer>()
+            //    .HasMany(p => p.Models)
+            //    .WithOne();
+
             modelBuilder.Entity<Model>()
                 .Property(p => p.Name)
                 .HasMaxLength(128)
@@ -104,6 +154,11 @@ namespace ReenWise.Infrastructure.Data.Context
             modelBuilder.Entity<Model>()
                 .Property(p => p.Attachment)
                 .HasMaxLength(256);
+
+            //modelBuilder.Entity<Model>()
+            //    .HasOne(p => p.Manufacturer)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.ManufacturerId);
 
             modelBuilder.Entity<OdoMeter>()
                 .Property(p => p.Value)
@@ -175,6 +230,36 @@ namespace ReenWise.Infrastructure.Data.Context
                 .Property(p => p.Color)
                 .HasMaxLength(32);
 
+            //modelBuilder.Entity<Vehicle>()
+            //    .HasOne(p => p.Model)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.ModelId);
+
+            //modelBuilder.Entity<Vehicle>()
+            //    .HasOne(p => p.LicensePlate)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.LicensePlateId);
+
+            //modelBuilder.Entity<Vehicle>()
+            //    .HasOne(p => p.Unit)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.UnitId);
+
+            //modelBuilder.Entity<Vehicle>()
+            //    .HasOne(p => p.Driver)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.DriverId);
+
+            //modelBuilder.Entity<Vehicle>()
+            //    .HasOne(p => p.Organization)
+            //    .WithMany(b => b.Vehicles)
+            //    .HasForeignKey(p => p.OrganizationId);
+
+            //modelBuilder.Entity<Vehicle>()
+            //    .HasOne(p => p.OdoMeter)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.OdoMeterId);
+            
             modelBuilder.Seed();
         }
     }
@@ -190,20 +275,20 @@ namespace ReenWise.Infrastructure.Data.Context
             //        // The table is empty
             //    }
             //}
-            modelBuilder.Entity<Model>().HasData(
-                new Model {Id = Guid.NewGuid(), Name = "DAJLJA C-05L-L", SerialNumber = "MUM030887", Description = "B3"},
-                new Model {Id = Guid.NewGuid(), Name = "EAARST C-10L", SerialNumber = "MUM030467", Description = "C Estetisk stygg"},
-                new Model {Id = Guid.NewGuid(), Name = "EABXEL C-10L", SerialNumber = "MUM030764", Description = "C Estetisk stygg"},
-                new Model {Id = Guid.NewGuid(), Name = "EACHRX C-08CL", SerialNumber = "MUM030719", Description = "B Estetisk stygg"},
-                new Model {Id = Guid.NewGuid(), Name = "EADRBA C-08CL", SerialNumber = "MUM030746", Description = "B Estetisk stygg"},
-                new Model {Id = Guid.NewGuid(), Name = "EAEATJ C-22K", SerialNumber = "MUM029340", Description = "B Fin"},
-                new Model {Id = Guid.NewGuid(), Name = "EAGUUU C-08CL", SerialNumber = "MUM030683", Description = "A Fin"},
-                new Model {Id = Guid.NewGuid(), Name = "EAHBYT C-10CL", SerialNumber = "MUM030741", Description = "C Estetisk stygg"},
-                new Model {Id = Guid.NewGuid(), Name = "EAJFGU C-10LL", SerialNumber = "MUM029330", Description = "A Fin"},
-                new Model {Id = Guid.NewGuid(), Name = "EAKNKF C-10CL", SerialNumber = "MUM030743", Description = "C Estetisk stygg"},
-                new Model {Id = Guid.NewGuid(), Name = "EALUNJ C-10L", SerialNumber = "MUM030509", Description = "C Estetisk stygg"},
-                new Model {Id = Guid.NewGuid(), Name = "EANVZX C-22K", SerialNumber = "MUM030724", Description = "C Estetisk stygg"}
-            );
+            //modelBuilder.Entity<Model>().HasData(
+            //    new Model {Id = Guid.NewGuid(), Name = "DAJLJA C-05L-L", SerialNumber = "MUM030887", Description = "B3"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EAARST C-10L", SerialNumber = "MUM030467", Description = "C Estetisk stygg"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EABXEL C-10L", SerialNumber = "MUM030764", Description = "C Estetisk stygg"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EACHRX C-08CL", SerialNumber = "MUM030719", Description = "B Estetisk stygg"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EADRBA C-08CL", SerialNumber = "MUM030746", Description = "B Estetisk stygg"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EAEATJ C-22K", SerialNumber = "MUM029340", Description = "B Fin"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EAGUUU C-08CL", SerialNumber = "MUM030683", Description = "A Fin"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EAHBYT C-10CL", SerialNumber = "MUM030741", Description = "C Estetisk stygg"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EAJFGU C-10LL", SerialNumber = "MUM029330", Description = "A Fin"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EAKNKF C-10CL", SerialNumber = "MUM030743", Description = "C Estetisk stygg"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EALUNJ C-10L", SerialNumber = "MUM030509", Description = "C Estetisk stygg"},
+            //    new Model {Id = Guid.NewGuid(), Name = "EANVZX C-22K", SerialNumber = "MUM030724", Description = "C Estetisk stygg"}
+            //);
 
             modelBuilder.Entity<Manufacturer>().HasData(
                 new Manufacturer {Id = Guid.NewGuid(), Name = "Nordcon AS"},

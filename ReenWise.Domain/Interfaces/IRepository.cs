@@ -11,8 +11,9 @@ namespace ReenWise.Domain.Interfaces
     {
         //Task<IEnumerable<T>> GetAll();
         //Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate = null);
-        Task<IEnumerable<T>> GetAll(ISpecification<T> specification = null);
-        Task<T> GetById(Guid id);
+        Task<IEnumerable<T>> Find(ISpecification<T> specification);
+        Task<T> FindById(Guid id);
+        Task<T> FindById(ISpecification<T> specification);
         Task<T> Add(T entity);
         Task<bool> AddRange(IEnumerable<T> entities);
         Task<bool> Update(Guid id, T entity);

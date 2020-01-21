@@ -25,7 +25,7 @@ namespace ReenWise.Domain.CommandHandler
 
         public async Task<Vehicle> Handle(GetVehicleByIdQuery request, CancellationToken cancellationToken)
         {
-            var result = await _repository.GetById(request.Id);
+            var result = await _repository.FindById(request.Id);
             return result;
         }
     }

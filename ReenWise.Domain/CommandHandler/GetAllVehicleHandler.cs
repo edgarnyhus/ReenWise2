@@ -29,7 +29,7 @@ namespace ReenWise.Domain.CommandHandler
 
         public async Task<List<Vehicle>> Handle(GetAllVehicleQuery request, CancellationToken cancellationToken)
         {
-            var result = await _repository.GetAll();
+            var result = await _repository.Find(request.Specification);
             return (List<Vehicle>)result;
         }
     }

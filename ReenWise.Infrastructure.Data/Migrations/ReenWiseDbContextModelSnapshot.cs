@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using ReenWise.Infrastructure.Data.Context;
 
 namespace ReenWise.Infrastructure.Data.Migrations
@@ -15,7 +16,7 @@ namespace ReenWise.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -64,6 +65,10 @@ namespace ReenWise.Infrastructure.Data.Migrations
 
                     b.Property<Guid?>("InitialOperatingHoursId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Point>("Location")
+                        .IsRequired()
+                        .HasColumnType("geometry");
 
                     b.Property<Guid?>("ManufacturerId")
                         .HasColumnType("uniqueidentifier");
@@ -190,12 +195,12 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("31f0f55a-0ccc-4db2-9c9e-38004a336b77"),
+                            Id = new Guid("d12520c6-56a4-4ce0-b9cb-afeaa96277ac"),
                             Name = "Nordcon AS"
                         },
                         new
                         {
-                            Id = new Guid("4b23aa38-355d-49ad-8a05-967fc1136183"),
+                            Id = new Guid("dcbdd01d-fbf8-4b42-8a0e-e814acfb6ec0"),
                             Name = "BNS Container AS"
                         });
                 });
@@ -220,9 +225,6 @@ namespace ReenWise.Infrastructure.Data.Migrations
 
                     b.Property<float?>("Length")
                         .HasColumnType("real");
-
-                    b.Property<Guid?>("ManufactorerId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ManufacturerId")
                         .HasColumnType("uniqueidentifier");
@@ -250,92 +252,6 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     b.HasIndex("ManufacturerId");
 
                     b.ToTable("Models");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("be2ef4b7-4d13-4a05-9806-66465b2bbb66"),
-                            Description = "B3",
-                            Name = "DAJLJA C-05L-L",
-                            SerialNumber = "MUM030887"
-                        },
-                        new
-                        {
-                            Id = new Guid("02548f4e-84bf-4e99-87ce-b9d7c8f98986"),
-                            Description = "C Estetisk stygg",
-                            Name = "EAARST C-10L",
-                            SerialNumber = "MUM030467"
-                        },
-                        new
-                        {
-                            Id = new Guid("356cf5b4-cdc2-42c2-96bd-7c660abe583c"),
-                            Description = "C Estetisk stygg",
-                            Name = "EABXEL C-10L",
-                            SerialNumber = "MUM030764"
-                        },
-                        new
-                        {
-                            Id = new Guid("cf161733-ac50-4cea-9f2b-eada036d1203"),
-                            Description = "B Estetisk stygg",
-                            Name = "EACHRX C-08CL",
-                            SerialNumber = "MUM030719"
-                        },
-                        new
-                        {
-                            Id = new Guid("bac1e53d-2781-4e8a-a93f-c697c37c2084"),
-                            Description = "B Estetisk stygg",
-                            Name = "EADRBA C-08CL",
-                            SerialNumber = "MUM030746"
-                        },
-                        new
-                        {
-                            Id = new Guid("66610c67-074c-43f9-9607-581435eabb2a"),
-                            Description = "B Fin",
-                            Name = "EAEATJ C-22K",
-                            SerialNumber = "MUM029340"
-                        },
-                        new
-                        {
-                            Id = new Guid("4953ad33-a8a0-46fc-a775-a902c97ec75d"),
-                            Description = "A Fin",
-                            Name = "EAGUUU C-08CL",
-                            SerialNumber = "MUM030683"
-                        },
-                        new
-                        {
-                            Id = new Guid("da0d6031-4532-4314-9725-bbb8bf7aada3"),
-                            Description = "C Estetisk stygg",
-                            Name = "EAHBYT C-10CL",
-                            SerialNumber = "MUM030741"
-                        },
-                        new
-                        {
-                            Id = new Guid("8fb1111f-b0c5-4097-bc93-755413fec430"),
-                            Description = "A Fin",
-                            Name = "EAJFGU C-10LL",
-                            SerialNumber = "MUM029330"
-                        },
-                        new
-                        {
-                            Id = new Guid("569918b6-eb5d-49b9-9fb9-645dfb71dbfb"),
-                            Description = "C Estetisk stygg",
-                            Name = "EAKNKF C-10CL",
-                            SerialNumber = "MUM030743"
-                        },
-                        new
-                        {
-                            Id = new Guid("c862e37d-a574-4442-be50-f9cbbe3b926e"),
-                            Description = "C Estetisk stygg",
-                            Name = "EALUNJ C-10L",
-                            SerialNumber = "MUM030509"
-                        },
-                        new
-                        {
-                            Id = new Guid("70af57fc-7279-4868-b005-cf1b04b8e058"),
-                            Description = "C Estetisk stygg",
-                            Name = "EANVZX C-22K",
-                            SerialNumber = "MUM030724"
-                        });
                 });
 
             modelBuilder.Entity("ReenWise.Domain.Models.Mirror.OdoMeter", b =>
@@ -393,12 +309,12 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("03c93f3f-3381-4690-8e52-96b3c224a74d"),
+                            Id = new Guid("d4457ee2-8690-4367-b9e2-39b300581556"),
                             Name = "Norsk Gjenvinning AS"
                         },
                         new
                         {
-                            Id = new Guid("ca5515f4-89c1-4558-8e06-075f38a20a2e"),
+                            Id = new Guid("2cbeca1a-d4db-41f3-bd14-38922aa0b76f"),
                             Name = "SmartContainer AS"
                         });
                 });
@@ -495,6 +411,10 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     b.Property<Guid>("LicensePlateId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Point>("Location")
+                        .IsRequired()
+                        .HasColumnType("geometry");
+
                     b.Property<Guid?>("ManufacturerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -550,7 +470,7 @@ namespace ReenWise.Infrastructure.Data.Migrations
                         .HasForeignKey("InitialOperatingHoursId");
 
                     b.HasOne("ReenWise.Domain.Models.Mirror.Manufacturer", null)
-                        .WithMany("Equipments")
+                        .WithMany("Equipment")
                         .HasForeignKey("ManufacturerId");
 
                     b.HasOne("ReenWise.Domain.Models.Mirror.Model", "Model")
@@ -562,7 +482,7 @@ namespace ReenWise.Infrastructure.Data.Migrations
                         .HasForeignKey("OperatingHoursId");
 
                     b.HasOne("ReenWise.Domain.Models.Mirror.Organization", "Organization")
-                        .WithMany("Equipments")
+                        .WithMany("Equipment")
                         .HasForeignKey("OrganizationId");
 
                     b.HasOne("ReenWise.Domain.Models.Mirror.Unit", "Unit")

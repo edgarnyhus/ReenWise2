@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using ReenWise.Domain.CommandHandler;
 using ReenWise.Domain.Interfaces;
 using ReenWise.Domain.Models.Mirror;
+using ReenWise.Domain.Specifications;
 using ReenWise.Infrastructure.Data.Context;
 
 namespace ReenWise.Infrastructure.Data.Repositories
@@ -21,25 +22,27 @@ namespace ReenWise.Infrastructure.Data.Repositories
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Equipment>> GetAll()
-        {
-            _logger.LogInformation($"GetAll: Get all equipment");
-
-            var query = _dbContext.Set<Equipment>()
-                .Include(_dbContext.GetIncludePaths(typeof(Equipment)))
-                .Include(x => x.Locations);
-            var result = await query.ToListAsync();
-            return result as IEnumerable<Equipment>;
-
-        }
-
-
         public async Task<Equipment> Add(Equipment entity)
         {
-            CheckProperties(entity);
-            var result = await base.Add(entity);
+            Equipment _entity;
 
-            return entity;
+            _entity = _dbContext.Equipment.Add(entity).Entity;
+            CheckProperties(_entity);
+
+            _dbContext.Entry(_entity.Model).State = EntityState.Modified;
+            _dbContext.Entry(_entity.OperatingHours).State = EntityState.Modified;
+            _dbContext.Entry(_entity.Unit).State = EntityState.Modified;
+            _dbContext.Entry(_entity.Organization).State = EntityState.Modified;
+            _dbContext.Entry(_entity.InitialOperatingHours).State = EntityState.Modified;
+            _dbContext.Entry(_entity).State = EntityState.Added;
+           //_entity.Model = null;
+            //_entity.OperatingHours = null;
+            //_entity.Unit = null;
+            //_entity.Organization = null;
+            //_entity.InitialOperatingHours = null;
+
+            _dbContext.SaveChanges();
+            return _entity;
         }
 
         public async Task<bool> Update(Guid id, Equipment entity)
@@ -75,7 +78,7 @@ namespace ReenWise.Infrastructure.Data.Repositories
             if (id == Guid.Empty)
                 return false;
 
-            var _entity = GetById(id);
+            var _entity = FindById(id);
             if (_entity == null)
             {
                 return await Add(entity) != null;
@@ -84,7 +87,6 @@ namespace ReenWise.Infrastructure.Data.Repositories
             CheckProperties(entity);
             return await base.Update(id, entity);
             var result = _dbContext.Equipment.Update(entity);
-            //_dbContext.Entry<T>(_entity).State = EntityState.Detached;
             await _dbContext.SaveChangesAsync();
             return result != null ? true : false;
         }
@@ -93,156 +95,124 @@ namespace ReenWise.Infrastructure.Data.Repositories
         {
             if (entity.Model != null)
             {
-                entity.ModelId = entity.Model.Id;
-                if (entity.ModelId == Guid.Empty)
+                if (entity.Model.Id == Guid.Empty)
                 {
-                    var _result = GetOrCreateModel(entity.Model);
-                    entity.ModelId = _result.Result.Id;
+                    entity.Model = GetOrCreateModel(entity.Model).Result;
+                    entity.ModelId = entity.Model.Id;
                 }
             }
             if (entity.OperatingHours != null)
             {
-                entity.OperatingHoursId = entity.OperatingHours.Id;
                 if (entity.OperatingHoursId == Guid.Empty)
                 {
-                    var _result = GetOrCreateOperatingHours(entity.OperatingHours);
-                    entity.OperatingHoursId = _result.Result.Id;
+                    entity.OperatingHours = GetOrCreateOperatingHours(entity.OperatingHours).Result;
+                    entity.OperatingHoursId = entity.OperatingHours.Id;
                 }
             }
             if (entity.InitialOperatingHours != null)
             {
-                entity.InitialOperatingHoursId = entity.InitialOperatingHours.Id;
                 if (entity.InitialOperatingHoursId == Guid.Empty)
                 {
-                    var _result = GetOrCreateOperatingHours(entity.OperatingHours);
-                    entity.InitialOperatingHoursId = _result.Result.Id;
+                    entity.InitialOperatingHours = GetOrCreateOperatingHours(entity.OperatingHours).Result;
+                    entity.InitialOperatingHoursId = entity.InitialOperatingHours.Id;
                 }
             }
             if (entity.Unit != null)
             {
-                entity.UnitId = entity.Unit.Id;
                 if (entity.UnitId == Guid.Empty)
                 {
-                    var _result = GetOrCreateUnit(entity.Unit);
-                    entity.UnitId = _result.Result.Id;
+                    entity.Unit = GetOrCreateUnit(entity.Unit).Result;
+                    entity.UnitId = entity.Unit.Id;
                 }
             }
             if (entity.Organization != null)
             {
-                entity.OrganizationId = entity.Organization.Id;
                 if (entity.OrganizationId == Guid.Empty)
                 {
-                    var _result = GetOrCreateOrganization(entity.Organization);
-                    entity.OrganizationId = _result.Result.Id;
+                    entity.Organization = GetOrCreateOrganization(entity.Organization).Result;
+                    entity.OrganizationId = entity.Organization.Id;
                 }
             }
         }
 
         public async Task<Organization> GetOrCreateOrganization(Organization organization)
         {
-            var entity = await _dbContext.Organizations.FirstOrDefaultAsync(x =>
-                x.Id == organization.Id ||
-                String.Compare(x.Name, organization.Name) == 0);
-            if (entity == null)
+            var _organization = _dbContext.Organizations.SingleOrDefault(x =>
+                x.Id == organization.Id || String.Compare(x.Name, organization.Name) == 0);
+            if (_organization == null)
             {
-                var result = await _dbContext.Organizations.AddAsync(organization);
-                entity = result.Entity;
+                var result = _dbContext.Organizations.Add(organization);
+                await _dbContext.SaveChangesAsync();
+                _organization = result.Entity;
             }
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            return _organization;
         }
 
         public async Task<Model> GetOrCreateModel(Model model)
         {
-            var entity = await _dbContext.Models
-                .FirstOrDefaultAsync(x =>
+            var _model = _dbContext.Models.SingleOrDefault(x =>
                     x.Id == model.Id || String.Compare(x.Name, model.Name) == 0);
-            if (entity == null)
+            if (_model == null)
             {
-                var result = await _dbContext.Models.AddAsync(model);
-                entity = result.Entity;
-            } 
-            //else
-            //{
-            //    foreach (var prop in entity.Model.GetType().GetProperties())
-            //    {
-            //        var propname = prop.Name;
-            //        if (!prop.Equals(model))
-            //        {
-            //            prop.SetValue(entity.Model, model);
-            //        }
-            //    }
-            //}
-            
-            await _dbContext.SaveChangesAsync();
-            return entity;
+                var result = _dbContext.Models.Add(model);
+                await _dbContext.SaveChangesAsync();
+                _model = result.Entity;
+            }
+            return _model;
         }
 
         public async Task<Unit> GetOrCreateUnit(Unit unit)
         {
-            var entity = await _dbContext.Units
-                .FirstOrDefaultAsync(x =>
+            var _unit = _dbContext.Units.SingleOrDefault(x =>
                     x.Id == unit.Id || String.Compare(x.SerialNumber, unit.SerialNumber) == 0);
-            if (entity == null)
+            if (_unit == null)
             {
-                var result = await _dbContext.Units.AddAsync(unit);
-                entity = result.Entity;
+                var result = _dbContext.Units.Add(unit);
+                await _dbContext.SaveChangesAsync();
+                _unit = result.Entity;
             }
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            return _unit;
         }
 
         public async ValueTask<OperatingHours> GetOrCreateOperatingHours(OperatingHours operatingHours)
         {
-            var entity = await _dbContext.OperatingHours
-                .FirstOrDefaultAsync(x =>
+            var _operatingHours = _dbContext.OperatingHours.SingleOrDefault(x =>
                     x.Id == operatingHours.Id ||
                     x.Hours == operatingHours.Hours && x.UnitDriven == operatingHours.UnitDriven);
-            if (entity == null)
+            if (_operatingHours == null)
             {
-                var result = await _dbContext.OperatingHours.AddAsync(operatingHours);
-                entity = result.Entity;
+                var result = _dbContext.OperatingHours.Add(operatingHours);
+                await _dbContext.SaveChangesAsync();
+                _operatingHours = result.Entity;
             }
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            return _operatingHours;
         }
 
         public async Task<Location> GetOrCreateLocation(Location location)
         {
-            var entity = await _dbContext.Locations
-                .FirstOrDefaultAsync(x =>
-                    x.Id == location.Id ||
-                    DateTime.Compare(x.Timestamp, location.Timestamp) == 0);
-                         //&& (x.inMovement == location.inMovement)
-                         //&& (x.latitude == location.latitude)
-                         //&& (x.latitude == location.longitude));
-                         //&& (Math.Abs(x.latitude - location.latitude) < 0.001)
-                         //&& (Math.Abs(x.latitude - location.longitude) < 0.001));
-            if (entity == null)
+            var _location = _dbContext.Locations.SingleOrDefault(x =>
+                    x.Id == location.Id || DateTime.Compare(x.Timestamp, location.Timestamp) == 0);
+            if (_location == null)
             {
-                var result = await _dbContext.Locations.AddAsync(location);
-                entity = result.Entity;
+                var result = _dbContext.Locations.Add(location);
+                await _dbContext.SaveChangesAsync();
+                _location = result.Entity;
             }
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            return _location;
         }
 
         public async Task<Temperature> GetOrCreateTemperature(Temperature temperature)
         {
-            var entity = await _dbContext.Temperatures
-                .FirstOrDefaultAsync(x =>
+            var _temperature = _dbContext.Temperatures.SingleOrDefault(x =>
                     x.Id == temperature.Id ||
                     DateTime.Compare(x.Timestamp, temperature.Timestamp) == 0);
-            if (entity == null)
+            if (_temperature == null)
             {
-                var result = await _dbContext.Temperatures.AddAsync(temperature);
-                entity = result.Entity;
+                var result = _dbContext.Temperatures.Add(temperature);
+                await _dbContext.SaveChangesAsync();
+                _temperature = result.Entity;
             }
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            return _temperature;
         }
-
-
-
     }
 }

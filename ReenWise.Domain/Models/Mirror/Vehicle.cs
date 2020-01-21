@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using NetTopologySuite.Geometries;
 using ReenWise.Domain.Interfaces;
 
 namespace ReenWise.Domain.Models.Mirror
@@ -16,18 +18,28 @@ namespace ReenWise.Domain.Models.Mirror
 
   
         public string Alias { get; set; }
-        public virtual Model Model { get; set; }
+        [ForeignKey("ModelId")]
+        public Model Model { get; set; }
+        public Guid ModelId { get; set; }
+        [ForeignKey("LicensePlateId")]
         public LicensePlate LicensePlate { get; set; }
         public Guid LicensePlateId { get; set; }
         public DateTime RegisteredAt { get; set; }
         public string? CommercialClass { get; set; }    // "commercial_class": "Commercial",
-        public virtual Unit? Unit { get; set ; }
-        public virtual ICollection<Location> Locations { get; set; }
-        public virtual Driver? Driver { get; set; }
+        [ForeignKey("UnitId")]
+        public Unit? Unit { get; set ; }
+        public Guid? UnitId { get; set ; }
+        public ICollection<Location> Locations { get; set; }
+        [Column(TypeName = "geometry")]
+        public Point Location { get; set; }
+        [ForeignKey("DriverId")]
+        public Driver? Driver { get; set; }
         public Guid? DriverId { get; set; }
-        public virtual Organization Organization { get; set; }
+        [ForeignKey("OrganizationId")]
+        public Organization Organization { get; set; }
         public Guid OrganizationId { get; set; }
-        public virtual OdoMeter? OdoMeter { get; set; }
+        [ForeignKey("OdoMeterId")]
+        public OdoMeter? OdoMeter { get; set; }
         public Guid? OdoMeterId { get; set; }
         public string? Notes { get; set; }
         public virtual ICollection<Temperature>? Temperatures { get; set; }

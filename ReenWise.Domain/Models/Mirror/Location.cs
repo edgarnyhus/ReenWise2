@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.Spatial;
 using System.Text;
 using ReenWise.Domain.Interfaces;
 
 namespace ReenWise.Domain.Models.Mirror
 {
+    //public class GeoLocation : EntityBase
     public class Location : EntityBase
     {
         public float Latitude { get; set; }
@@ -16,9 +19,5 @@ namespace ReenWise.Domain.Models.Mirror
         public int? Speed { get; set; }
         public int? Course { get; set; }
         public float? AccuracyRadius { get; set; }
-        //public virtual Equipment? Equipment { get; set; }
-        //public Guid? EquipmentId { get; set; }
-        //public virtual Vehicle? Vehicle { get; set; }
-        //public Guid? VehicleId { get; set; }
     }
 }

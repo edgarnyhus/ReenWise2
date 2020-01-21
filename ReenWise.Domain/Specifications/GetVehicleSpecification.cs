@@ -8,19 +8,23 @@ using ReenWise.Domain.Specifications;
 
 namespace ReenWise.Domain.Specifications
 {
-    public class GetAllEquipmentSpecification : BaseSpecification<Equipment>
+    public class GetVehicleSpecification : BaseSpecification<Vehicle>
     {
-        public GetAllEquipmentSpecification() : base()
+        //public Guid Id { get; }
+        public GetVehicleSpecification() : base()
         {
             AddInclude(x => x.Model);
+            AddInclude(x => x.LicensePlate);
             AddInclude(x => x.Organization);
             AddInclude(x => x.Locations);
             //AddInclude($"{nameof(Equipment.Model)},{nameof(Equipment.Organization)},{nameof(Equipment.Locations)}");
         }
 
-        public GetAllEquipmentSpecification(Guid id) : base(x => x.Id == id)
+        public GetVehicleSpecification(Guid id) : base(x => x.Id == id)
         {
+            //Id = id;
             AddInclude(x => x.Model);
+            AddInclude(x => x.LicensePlate);
             AddInclude(x => x.Organization);
             AddInclude(x => x.Locations);
             //AddInclude($"{nameof(Equipment.Model)},{nameof(Equipment.Organization)},{nameof(Equipment.Locations)}");

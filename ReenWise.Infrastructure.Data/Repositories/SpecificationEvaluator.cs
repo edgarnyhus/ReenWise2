@@ -4,11 +4,20 @@ using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using ReenWise.Domain.Interfaces;
+using ReenWise.Infrastructure.Data.Context;
+using Z.EntityFramework.Plus;
 
 namespace ReenWise.Infrastructure.Data.Repositories
 {
     public class SpecificationEvaluator<T> where T : EntityBase
     {
+        protected ReenWiseDbContext _dbContext { get; set; }
+
+        public SpecificationEvaluator(ReenWiseDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> specification)
         {
             var query = inputQuery;
@@ -29,6 +38,9 @@ namespace ReenWise.Infrastructure.Data.Repositories
             // Include any string-based include statements
             query = specification.IncludeStrings.Aggregate(query,
                 (current, include) => current.Include(include));
+
+            query = specification.IncludeFilters.Aggregate(query,
+                (current, include) => current.IncludeFilter(include));
 
             // Apply ordering if expressions are set
             if (specification.OrderBy != null)

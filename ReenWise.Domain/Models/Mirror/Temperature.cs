@@ -9,9 +9,5 @@ namespace ReenWise.Domain.Models.Mirror
     {
         public float Value { get; set; }
         public DateTime Timestamp { get; set; }
-        //public virtual Equipment? Equipment { get; set; }
-        //public Guid? EquipmentId { get; set; }
-        //public virtual Vehicle? Vehiicle { get; set; }
-        //public Guid? VehiicleId { get; set; }
     }
 }

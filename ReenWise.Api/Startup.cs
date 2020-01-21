@@ -46,7 +46,8 @@ namespace ReenWise.Api
             services.AddDbContext<ReenWiseDbContext>(options =>
             {
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("ReenWiseDbConnection"));
+                    Configuration.GetConnectionString("ReenWiseDbConnection"),
+                    x => x.UseNetTopologySuite());
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)

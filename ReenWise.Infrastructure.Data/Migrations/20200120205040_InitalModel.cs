@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
 namespace ReenWise.Infrastructure.Data.Migrations
 {
-    public partial class InitialModel : Migration
+    public partial class InitalModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,8 +100,7 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     Width = table.Column<float>(nullable: true),
                     Volume = table.Column<float>(nullable: true),
                     Attachment = table.Column<string>(maxLength: 256, nullable: true),
-                    ManufacturerId = table.Column<Guid>(nullable: true),
-                    ManufactorerId = table.Column<Guid>(nullable: true)
+                    ManufacturerId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -144,6 +144,7 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     ModelId = table.Column<Guid>(nullable: true),
                     OperatingHoursId = table.Column<Guid>(nullable: true),
                     UnitId = table.Column<Guid>(nullable: true),
+                    Location = table.Column<Point>(type: "geometry", nullable: false),
                     OrganizationId = table.Column<Guid>(nullable: true),
                     InitialOperatingHoursId = table.Column<Guid>(nullable: true),
                     Notes = table.Column<string>(maxLength: 1024, nullable: true),
@@ -201,6 +202,7 @@ namespace ReenWise.Infrastructure.Data.Migrations
                     RegisteredAt = table.Column<DateTime>(nullable: false),
                     CommercialClass = table.Column<string>(maxLength: 32, nullable: true),
                     UnitId = table.Column<Guid>(nullable: true),
+                    Location = table.Column<Point>(type: "geometry", nullable: false),
                     DriverId = table.Column<Guid>(nullable: true),
                     OrganizationId = table.Column<Guid>(nullable: false),
                     OdoMeterId = table.Column<Guid>(nullable: true),
@@ -323,27 +325,8 @@ namespace ReenWise.Infrastructure.Data.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("31f0f55a-0ccc-4db2-9c9e-38004a336b77"), "Nordcon AS" },
-                    { new Guid("4b23aa38-355d-49ad-8a05-967fc1136183"), "BNS Container AS" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Models",
-                columns: new[] { "Id", "Attachment", "Description", "HHeight", "Length", "ManufactorerId", "ManufacturerId", "Name", "SerialNumber", "Volume", "Weight", "Width" },
-                values: new object[,]
-                {
-                    { new Guid("be2ef4b7-4d13-4a05-9806-66465b2bbb66"), null, "B3", null, null, null, null, "DAJLJA C-05L-L", "MUM030887", null, null, null },
-                    { new Guid("02548f4e-84bf-4e99-87ce-b9d7c8f98986"), null, "C Estetisk stygg", null, null, null, null, "EAARST C-10L", "MUM030467", null, null, null },
-                    { new Guid("356cf5b4-cdc2-42c2-96bd-7c660abe583c"), null, "C Estetisk stygg", null, null, null, null, "EABXEL C-10L", "MUM030764", null, null, null },
-                    { new Guid("cf161733-ac50-4cea-9f2b-eada036d1203"), null, "B Estetisk stygg", null, null, null, null, "EACHRX C-08CL", "MUM030719", null, null, null },
-                    { new Guid("bac1e53d-2781-4e8a-a93f-c697c37c2084"), null, "B Estetisk stygg", null, null, null, null, "EADRBA C-08CL", "MUM030746", null, null, null },
-                    { new Guid("66610c67-074c-43f9-9607-581435eabb2a"), null, "B Fin", null, null, null, null, "EAEATJ C-22K", "MUM029340", null, null, null },
-                    { new Guid("4953ad33-a8a0-46fc-a775-a902c97ec75d"), null, "A Fin", null, null, null, null, "EAGUUU C-08CL", "MUM030683", null, null, null },
-                    { new Guid("da0d6031-4532-4314-9725-bbb8bf7aada3"), null, "C Estetisk stygg", null, null, null, null, "EAHBYT C-10CL", "MUM030741", null, null, null },
-                    { new Guid("8fb1111f-b0c5-4097-bc93-755413fec430"), null, "A Fin", null, null, null, null, "EAJFGU C-10LL", "MUM029330", null, null, null },
-                    { new Guid("569918b6-eb5d-49b9-9fb9-645dfb71dbfb"), null, "C Estetisk stygg", null, null, null, null, "EAKNKF C-10CL", "MUM030743", null, null, null },
-                    { new Guid("c862e37d-a574-4442-be50-f9cbbe3b926e"), null, "C Estetisk stygg", null, null, null, null, "EALUNJ C-10L", "MUM030509", null, null, null },
-                    { new Guid("70af57fc-7279-4868-b005-cf1b04b8e058"), null, "C Estetisk stygg", null, null, null, null, "EANVZX C-22K", "MUM030724", null, null, null }
+                    { new Guid("d12520c6-56a4-4ce0-b9cb-afeaa96277ac"), "Nordcon AS" },
+                    { new Guid("dcbdd01d-fbf8-4b42-8a0e-e814acfb6ec0"), "BNS Container AS" }
                 });
 
             migrationBuilder.InsertData(
@@ -351,8 +334,8 @@ namespace ReenWise.Infrastructure.Data.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("03c93f3f-3381-4690-8e52-96b3c224a74d"), "Norsk Gjenvinning AS" },
-                    { new Guid("ca5515f4-89c1-4558-8e06-075f38a20a2e"), "SmartContainer AS" }
+                    { new Guid("d4457ee2-8690-4367-b9e2-39b300581556"), "Norsk Gjenvinning AS" },
+                    { new Guid("2cbeca1a-d4db-41f3-bd14-38922aa0b76f"), "SmartContainer AS" }
                 });
 
             migrationBuilder.CreateIndex(

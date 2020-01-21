@@ -22,9 +22,9 @@ namespace ReenWise.Api
                 .ReverseMap();
             CreateMap<DriverContract, Driver>()
                 .ReverseMap();
-            CreateMap<Equipment, EquipmentDto>()
+            CreateMap<Equipment, EquipmentDto>().ForMember(x => x.location, opt => opt.Ignore())
                 .ReverseMap();
-            CreateMap<EquipmentContract, Equipment>()
+            CreateMap<EquipmentContract, Equipment>().ForMember(x => x.Location, opt => opt.Ignore())
                 .ReverseMap();
             CreateMap<LicensePlate, LicensePlateDto>()
                 .ReverseMap();
@@ -58,9 +58,9 @@ namespace ReenWise.Api
                 .ReverseMap();
             CreateMap<UnitContract, Unit>()
                 .ReverseMap();
-            CreateMap<Vehicle, VehicleDto>()
+            CreateMap<Vehicle, VehicleDto>().ForMember(x => x.location, opt => opt.Ignore())
                 .ReverseMap();
-            CreateMap<VehicleContract, Vehicle>()
+            CreateMap<VehicleContract, Vehicle>().ForMember(x => x.Location, opt => opt.Ignore())
                 .ReverseMap();
         }
     }

@@ -12,13 +12,13 @@ namespace ReenWise.Domain.Models.Mirror
         public Manufacturer()
         {
             Vehicles = new HashSet<Vehicle>();
-            Equipments = new HashSet<Equipment>();
+            Equipment = new HashSet<Equipment>();
             Models = new HashSet<Model>();
         }
 
         public string Name { get; set; }
         public virtual ICollection<Model> Models { get; set; }
-        public virtual ICollection<Equipment> Equipments { get; set; }  
+        public virtual ICollection<Equipment> Equipment { get; set; }  
         public virtual ICollection<Vehicle> Vehicles { get; set; }  
     }
 }

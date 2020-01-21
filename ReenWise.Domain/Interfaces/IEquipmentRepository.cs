@@ -8,9 +8,7 @@ namespace ReenWise.Domain.Interfaces
 {
     public interface IEquipmentRepository : IRepository<Equipment>
     {
-        Task<IEnumerable<Equipment>> GetAll();
-
-        public Task<Equipment> Add(Equipment entity);
-        public Task<bool> Update(Guid id, Equipment entity);
+        Task<Equipment> Add(Equipment entity);
+        Task<bool> Update(Guid id, Equipment entity);
     }
 }
